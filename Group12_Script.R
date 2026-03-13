@@ -4,7 +4,7 @@ library(readxl) #Package in reading an Excel file
 
 # Load the German Credit Risk dataset from Excel and store it in a variable
 # Note that the path will depend on where you downloaded the Excel file
-German_Credit_Risk <- read_excel("C:/Users/Migel/Downloads/German Credit Risk.xlsx")
+German_Credit_Risk <- read_excel("C:/Users/Name/Downloads/German Credit Risk.xlsx")
 View(German_Credit_Risk)
 DATA <- German_Credit_Risk # Alias for convenience throughout the script
 
