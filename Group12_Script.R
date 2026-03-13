@@ -3,6 +3,9 @@ library(readxl)
 #German_Credit_Risk <- read_excel("C:/Users/Admin/Downloads/German Credit Risk.xlsx", 
 #                                 sheet = "Sheet1")
 #View(German_Credit_Risk)
+German_Credit_Risk <- read_excel("C:/Users/Migel/Downloads/German Credit Risk.xlsx")
+View(German_Credit_Risk)
+DATA <- German_Credit_Risk #Assign dataset to DATA variable
 
 #----Function in R----
 # Function (Multiplication)
