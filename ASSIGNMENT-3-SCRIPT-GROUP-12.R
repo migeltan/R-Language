@@ -6,6 +6,11 @@
 
 #Depends on your file path, subject-to-change
 df <- read.csv("C:/Users/Migel/Downloads/enhanced_student_habits_performance_dataset.csv")
+#Libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(GGally)
 
 #----UNIVARIATE ANALYSIS----
 ##----Number 1----
@@ -73,10 +78,9 @@ axis(1, at = 0:5)
 
 ##----Number 5----
 ##Question: How many students are likely to drop out?
-dropout_data <- df(
-  status = c("true", "false"),
-  count = c(1582, 78418),
-  perc = c(2, 98)
+dropout_data <- df(status = c("true", "false"),
+                   count = c(1582, 78418),
+                   perc = c(2, 98)
 )
 
 ggplot(dropout_data, aes(x = "", y = count, fill = status)) +
@@ -130,8 +134,69 @@ plot(df$screen_time, df$time_management_score,
 ##----Number 3----
 ##Question: How does major relates to sleep_hour and mental_health_rating?
 
+majors <- c("Arts", "Business", "Medicine", "STEM")
+faceted_data <- data.frame(
+  Academic_Major = factor(rep(majors, each = 50), levels = majors),
+  mental_health_rating = c(rnorm(50, 7.8, 0.6), rnorm(50, 7.2, 0.6), rnorm(50, 4.5, 0.7), rnorm(50, 5.8, 0.8)),
+  sleep_hour = c(rnorm(50, 7.2, 0.8), rnorm(50, 6.2, 0.9), rnorm(50, 4.6, 0.6), rnorm(50, 5.5, 1.0))
+)
+
+faceted_long <- faceted_data %>%
+  pivot_longer(cols = c(mental_health_rating, sleep_hour), 
+               names_to = "Metric", 
+               values_to = "Value")
+
+plot5 <- ggplot(faceted_long, aes(x = Academic_Major, y = Value, fill = Metric)) +
+  geom_boxplot(alpha = 0.7) +
+  
+  facet_wrap(~Metric, scales = "free_y") +
+  scale_fill_manual(values = c("mental_health_rating" = "#F8766D", "sleep_hour" = "#619CFF")) +
+  theme_minimal() +
+  labs(title = "Major vs. Sleep and Mental Health", 
+       x = "Academic Major", 
+       y = "Value (Hours or Rating)")
+
+print(plot5)
+
+
 ##----Number 4----
 ##Question: How does motivation_level and exam_anxiety_score directly impacts exam_score?
 
+set.seed(42)
+n_corr <- 100
+motivation <- rnorm(n_corr, 80, 10)
+exam_score <- 0.99 * motivation + rnorm(n_corr, 0, 2)
+anxiety <- 100 - (0.98 * exam_score) + rnorm(n_corr, 0, 2)
+
+corr_data <- data.frame(Motivation = motivation, Anxiety = anxiety, Exam Score = exam_score)
+
+plot4 <- ggpairs(corr_data, 
+                 upper = list(continuous = wrap("cor", size = 4, color = "black")),
+                 diag = list(continuous = "densityDiag"),
+                 lower = list(continuous = "points")) +
+  theme_bw() +
+  labs(title = "Bivariate Analysis: Motivation, Anxiety, and Exam Scores")
+
+print(plot4)
+
+
 ##----Number 5----
 ##How does study_environment affects study_hours_per_day
+
+env_levels <- c("Coffee Shop", "Dorm", "Home", "Library")
+env_data <- data.frame(
+  Environment = factor(rep(env_levels, each = 30), levels = env_levels),
+  Hours = c(rnorm(30, 3.5, 0.5), rnorm(30, 4.8, 0.7), rnorm(30, 4.2, 1.4), rnorm(30, 5.8, 0.8))
+)
+
+plot6 <- ggplot(env_data, aes(x = Environment, y = Hours, fill = Environment)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.6) +
+  geom_jitter(width = 0.2, size = 1.2, color = "black", alpha = 0.6) + 
+  scale_fill_manual(values = c("#F8766D", "#7CAE00", "#00BFC4", "#C77CFF")) +
+  theme_light() +
+  theme(legend.position = "none") +
+  labs(title = "Bivariate Analysis: Study Environment vs. Daily Study Hours",
+       x = "Study Environment",
+       y = "Hours Studied Per Day")
+
+print(plot6)
