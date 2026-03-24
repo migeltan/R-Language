@@ -42,11 +42,9 @@ text(x = seq_along(gender_counts),
 ##----Number 3----
 ##Question: How many students are at the legal age (18+)?
 
-# Load data
-data <- read.csv("C:/Users/valde/OneDrive/Desktop/SPR/Enhanced Student Habits Performace Dataset.csv")
 # Count students
-legal <- sum(data$age >= 18, na.rm = TRUE)
-minor <- sum(data$age < 18, na.rm = TRUE)
+legal <- sum(df$age >= 18, na.rm = TRUE)
+minor <- sum(df$age < 18, na.rm = TRUE)
 # Combine counts
 values <- c(legal, minor)
 categories <- c("18 and above", "Below 18")
@@ -62,10 +60,8 @@ pie(values,
 ##----Number 4----
 ##Question: What's the average number of weekly social activities attended by 80,000 students?
 
-# Load data
-data <- read.csv("C:/Users/valde/OneDrive/Desktop/SPR/Enhanced Student Habits Performace Dataset.csv")
 # Create histogram
-hist(data$social_activity,
+hist(df$social_activity,
      main   = "Weekly Social Activities Attended by Students",
      xlab   = "Social Activities per Week",
      ylab   = "Number of Students",
@@ -78,9 +74,9 @@ axis(1, at = 0:5)
 
 ##----Number 5----
 ##Question: How many students are likely to drop out?
-dropout_data <- df(status = c("true", "false"),
-                   count = c(1582, 78418),
-                   perc = c(2, 98)
+dropout_data <- data.frame(status = c("true", "false"),
+                           count = c(1582, 78418),
+                           perc = c(2, 98)
 )
 
 ggplot(dropout_data, aes(x = "", y = count, fill = status)) +
@@ -168,7 +164,7 @@ motivation <- rnorm(n_corr, 80, 10)
 exam_score <- 0.99 * motivation + rnorm(n_corr, 0, 2)
 anxiety <- 100 - (0.98 * exam_score) + rnorm(n_corr, 0, 2)
 
-corr_data <- data.frame(Motivation = motivation, Anxiety = anxiety, Exam Score = exam_score)
+corr_data <- data.frame(Motivation = motivation, Anxiety = anxiety, Exam_Score = exam_score)
 
 plot4 <- ggpairs(corr_data, 
                  upper = list(continuous = wrap("cor", size = 4, color = "black")),
