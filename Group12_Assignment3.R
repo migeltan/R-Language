@@ -37,8 +37,39 @@ text(x = seq_along(gender_counts),
 ##----Number 3----
 ##Question: How many students are at the legal age (18+)?
 
+# Load data
+data <- read.csv("C:/Users/valde/OneDrive/Desktop/SPR/Enhanced Student Habits Performace Dataset.csv")
+# Count students
+legal <- sum(data$age >= 18, na.rm = TRUE)
+minor <- sum(data$age < 18, na.rm = TRUE)
+# Combine counts
+values <- c(legal, minor)
+categories <- c("18 and above", "Below 18")
+# Add percentages
+percentages <- round(values / sum(values) * 100)
+labels <- paste(categories, percentages, "%")
+# Create pie chart
+pie(values,
+    labels = labels,
+    main = "Age (18+ vs <18)",
+    col = c("skyblue", "darkblue"))
+
 ##----Number 4----
 ##Question: What's the average number of weekly social activities attended by 80,000 students?
+
+# Load data
+data <- read.csv("C:/Users/valde/OneDrive/Desktop/SPR/Enhanced Student Habits Performace Dataset.csv")
+# Create histogram
+hist(data$social_activity,
+     main   = "Weekly Social Activities Attended by Students",
+     xlab   = "Social Activities per Week",
+     ylab   = "Number of Students",
+     col    = "skyblue",
+     border = "darkblue",
+     breaks = seq(-0.5, 5.5, by = 1),
+     xaxt   = "n")
+# Add x-axis with exact labels 0-5
+axis(1, at = 0:5)
 
 ##----Number 5----
 ##Question: How many students are likely to drop out?
